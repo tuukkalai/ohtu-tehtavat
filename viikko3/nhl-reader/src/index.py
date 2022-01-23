@@ -1,5 +1,6 @@
 import requests
 from player import Player
+from datetime import datetime
 
 def main():
     url = "https://nhlstatisticsforohtu.herokuapp.com/players"
@@ -23,9 +24,12 @@ def main():
 
         players.append(player)
 
-    print("Oliot:")
+    fin_players = filter(lambda x : x.nationality == 'FIN', players )
 
-    for player in players:
+    print(f'Players from FIN {datetime.now()}')
+    print()
+
+    for player in fin_players:
         print(player)
 
 if __name__ == "__main__":

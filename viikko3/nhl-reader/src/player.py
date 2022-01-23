@@ -9,5 +9,7 @@ class Player:
         self.games = games
     
     def __str__(self):
-        # Sami Vatanen team CAR  goals 5 assists 18
-        return f'{self.name} team {self.team} goals {self.goals} assists {self.assists}'
+        points = self.goals + self.assists
+        goals = str(self.goals)
+        assists = str(self.assists)
+        return f'{self.name:21} {self.team:4}{goals:>2} + {assists:>2} = {points:>2}'
