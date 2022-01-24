@@ -8,6 +8,9 @@ class Player:
         self.team = team
         self.games = games
     
+    def __gt__(self, other):
+        return (self.goals + self.assists) > (other.goals + other.assists)
+
     def __str__(self):
         points = self.goals + self.assists
         goals = str(self.goals)

@@ -23,4 +23,4 @@ class PlayerReader:
 
 			players.append(player)
 
-		return players
+		return sorted(players, reverse=True)
