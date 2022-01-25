@@ -9,6 +9,10 @@ ${DELAY}  0 seconds
 ${HOME URL}  http://${SERVER}
 ${LOGIN URL}  http://${SERVER}/login
 ${REGISTER URL}  http://${SERVER}/register
+${USERNAME PASSWORD ERROR}  Invalid username or password
+${USERNAME REGISTER ERROR}  Malformatted username, min. 3 characters, a-z
+${PASSWORD ERROR}  Malformatted password (min. 8 characters, at least 1 other character than a-z)
+${PASSWORD MATCH ERROR}  Passwords do not match
 
 *** Keywords ***
 Open And Configure Browser
