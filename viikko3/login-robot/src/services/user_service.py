@@ -1,4 +1,4 @@
-import re, sys, pdb
+import re
 from entities.user import User
 
 
@@ -15,7 +15,6 @@ class UserService:
         self._user_repository = user_repository
 
     def check_credentials(self, username, password):
-        pdb.Pdb(stdout=sys.__stdout__).set_trace()
         if not username or not password:
             raise UserInputError("Username and password are required")
 
