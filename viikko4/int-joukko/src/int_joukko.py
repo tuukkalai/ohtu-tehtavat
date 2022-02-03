@@ -5,7 +5,7 @@ class IntJoukko:
         self.kapasiteetti = kapasiteetti
 
         if not isinstance(kasvatuskoko, int) or kasvatuskoko < 0:
-            raise Exception("kapasiteetti2")
+            raise Exception("Väärä kasvatuskoko")
         self.kasvatuskoko = kasvatuskoko
 
         self.ljono = [0] * self.kapasiteetti
@@ -18,27 +18,18 @@ class IntJoukko:
         return False
 
     def lisaa(self, n):
-        ei_ole = 0
-
-        if self.alkioiden_lkm == 0:
-            self.ljono[0] = n
-            self.alkioiden_lkm = self.alkioiden_lkm + 1
-            return True
-        else:
-            pass
-
         if not self.kuuluu(n):
-            self.ljono[self.alkioiden_lkm] = n
-            self.alkioiden_lkm = self.alkioiden_lkm + 1
-
-            if self.alkioiden_lkm % len(self.ljono) == 0:
+            if self.alkioiden_lkm > 0 and self.alkioiden_lkm % self.kapasiteetti == 0:
                 taulukko_old = self.ljono
                 self.kopioi_taulukko(self.ljono, taulukko_old)
                 self.ljono = [0] * (self.alkioiden_lkm + self.kasvatuskoko)
                 self.kopioi_taulukko(taulukko_old, self.ljono)
+                self.kapasiteetti += self.kasvatuskoko
+
+            self.ljono[self.alkioiden_lkm] = n
+            self.alkioiden_lkm += 1
 
             return True
-
         return False
 
     def poista(self, n):
