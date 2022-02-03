@@ -9,7 +9,7 @@ class TestKauppa(unittest.TestCase):
     def setUp(self) -> None:
         self.pankki_mock = Mock()
         self.viitegeneraattori_mock = Mock()
-        self.viitegeneraattori_mock.uusi.return_value = 42
+        self.viitegeneraattori_mock.uusi.side_effect = [42,43,44,45]
         self.varasto_mock = Mock()
 
         def varasto_saldo(tuote_id):
@@ -83,3 +83,37 @@ class TestKauppa(unittest.TestCase):
 
         # varmistetaan, että metodia tilisiirto on kutsuttu pelkän maidon hinnalla
         self.pankki_mock.tilisiirto.assert_called_with("matti", 42, "12346", "33333-44455", 5)
+
+    def test_aloita_asiointi_tyhjentaa_ostoskorin(self):
+        # tehdään ostokset
+        self.kauppa.aloita_asiointi()
+        self.kauppa.lisaa_koriin(1)
+        self.kauppa.lisaa_koriin(1)
+        self.kauppa.aloita_asiointi()
+        self.kauppa.lisaa_koriin(1)
+        self.kauppa.tilimaksu("matti", "12346")
+
+        # varmistetaan, että metodia tilisiirto on kutsuttu pelkän maidon hinnalla
+        self.pankki_mock.tilisiirto.assert_called_with("matti", 42, "12346", "33333-44455", 5)
+
+    def test_jokaiselle_ostokselle_oma_viitenumero(self):
+        self.kauppa.aloita_asiointi()
+        self.kauppa.lisaa_koriin(1)
+        self.kauppa.tilimaksu("aapo", "99999")
+
+        self.pankki_mock.tilisiirto.assert_called_with(ANY, 42, ANY, ANY, ANY)
+
+        self.kauppa.aloita_asiointi()
+        self.kauppa.lisaa_koriin(2)
+        self.kauppa.tilimaksu("bertil", "88888")
+
+        self.pankki_mock.tilisiirto.assert_called_with(ANY, 43, ANY, ANY, ANY)
+
+    def test_poista_tuote_korista(self):
+        self.kauppa.aloita_asiointi()
+        self.kauppa.lisaa_koriin(1)
+        self.kauppa.lisaa_koriin(2)
+        self.kauppa.poista_korista(1)
+        self.kauppa.tilimaksu("aapo", "99999")
+
+        self.pankki_mock.tilisiirto.assert_called_with(ANY, ANY, ANY, ANY, 6)
