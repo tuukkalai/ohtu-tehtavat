@@ -33,24 +33,15 @@ class IntJoukko:
         return False
 
     def poista(self, n):
-        kohta = -1
-        apu = 0
-
-        for i in range(0, self.alkioiden_lkm):
-            if n == self.ljono[i]:
-                kohta = i  # siis luku löytyy tuosta kohdasta :D
-                self.ljono[kohta] = 0
-                break
-
-        if kohta != -1:
-            for j in range(kohta, self.alkioiden_lkm - 1):
-                apu = self.ljono[j]
-                self.ljono[j] = self.ljono[j + 1]
-                self.ljono[j + 1] = apu
-
-            self.alkioiden_lkm = self.alkioiden_lkm - 1
-            return True
-
+        if self.kuuluu(n):
+            for i in range(0, self.alkioiden_lkm):
+                if n == self.ljono[i]:
+                    self.ljono[i] = 0
+                    for j in range(i, self.alkioiden_lkm - 1):
+                        self.ljono[j] = self.ljono[j + 1]
+                    self.ljono[self.alkioiden_lkm] = 0
+                    self.alkioiden_lkm = self.alkioiden_lkm - 1
+                    return True
         return False
 
     def kopioi_taulukko(self, a, b):
