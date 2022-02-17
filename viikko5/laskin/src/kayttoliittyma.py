@@ -13,37 +13,77 @@ class Summa:
     def __init__(self, sovellus, syote) -> None:
         self._sovellus = sovellus
         self._syote = syote
+        self.__viimeisin_arvo = 0
 
     def suorita(self):
         arvo = 0
         try:
             arvo = int(self._syote())
+            self.__viimeisin_arvo = arvo
             self._sovellus.plus(arvo)
         except Exception:
             pass
-        
+
+    def kumoa(self):
+        try:
+            self._sovellus.plus(-self.__viimeisin_arvo)
+            self.__viimeisin_arvo = 0
+        except Exception:
+            pass
+
 class Erotus:
     def __init__(self, sovellus, syote) -> None:
         self._sovellus = sovellus
         self._syote = syote
+        self.__viimeisin_arvo = 0
 
     def suorita(self):
         arvo = 0
         try:
             arvo = int(self._syote())
+            self.__viimeisin_arvo = arvo
             self._sovellus.miinus(arvo)
+        except Exception:
+            pass
+
+    def kumoa(self):
+        try:
+            self._sovellus.miinus(-self.__viimeisin_arvo)
+            self.__viimeisin_arvo = 0
         except Exception:
             pass
 
 class Nollaus:
     def __init__(self, sovellus) -> None:
         self._sovellus = sovellus
+        self.__viimeisin_arvo = 0
 
     def suorita(self):
         try:
+            self.__viimeisin_arvo = self._sovellus.tulos
             self._sovellus.nollaa()
         except Exception:
             pass
+
+    def kumoa(self):
+        try:
+            self._sovellus.plus(self.__viimeisin_arvo)
+            self.__viimeisin_arvo = 0
+        except Exception:
+            pass
+
+class Kumoa:
+    def __init__(self, sovellus) -> None:
+        self._sovellus = sovellus
+        self.__edellinen_komento = None
+
+    def edellinen_komento(self, komento):
+        self.__edellinen_komento = komento
+
+    def suorita(self):
+        if self.__edellinen_komento and self.__edellinen_komento != self:
+            self.__edellinen_komento.kumoa()
+
 
 class Kayttoliittyma:
     def __init__(self, sovellus, root):
@@ -52,7 +92,8 @@ class Kayttoliittyma:
         self._komennot = {
             Komento.SUMMA: Summa(self._sovellus, self._lue_syote),
             Komento.EROTUS: Erotus(self._sovellus, self._lue_syote),
-            Komento.NOLLAUS: Nollaus(self._sovellus)
+            Komento.NOLLAUS: Nollaus(self._sovellus),
+            Komento.KUMOA: Kumoa(self._sovellus)
         }
 
     def kaynnista(self):
@@ -101,6 +142,7 @@ class Kayttoliittyma:
     def _suorita_komento(self, komento):
         komento_olio = self._komennot[komento]
         komento_olio.suorita()
+        self._komennot[Komento.KUMOA].edellinen_komento(komento_olio)
         self._kumoa_painike["state"] = constants.NORMAL
 
         if self._sovellus.tulos == 0:
