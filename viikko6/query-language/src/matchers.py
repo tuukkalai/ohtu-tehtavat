@@ -26,7 +26,14 @@ class HasAtLeast:
 
         return player_value >= self._value
 
-# Not (parametrina olevan ehdon negaatio)
+class All:
+    def __init__(self) -> None:
+        pass
+
+    def matches(self, player):
+        return True
+
+
 class Not:
     def __init__(self, *matchers) -> None:
         self._matchers = matchers
