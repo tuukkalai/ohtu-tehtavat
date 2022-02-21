@@ -28,11 +28,11 @@ class HasAtLeast:
 
 # Not (parametrina olevan ehdon negaatio)
 class Not:
-    def __init__(self, matcher) -> None:
-        self._matcher = matcher
+    def __init__(self, *matchers) -> None:
+        self._matchers = matchers
 
-    def matches(self):
-        return not self._matcher()
-
-# All (tosi kaikille pelaajille)
-# HasFewerThan (HasAtLeast-komennon negaatio eli esim. on vähemmän kuin 10 maalia)
+    def matches(self, player):
+        for matcher in self._matchers:
+            if matcher.matches(player):
+                return False
+        return True
