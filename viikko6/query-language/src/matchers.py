@@ -33,7 +33,6 @@ class All:
     def matches(self, player):
         return True
 
-
 class Not:
     def __init__(self, *matchers) -> None:
         self._matchers = matchers
