@@ -1,6 +1,3 @@
-from kps_pelaaja_vs_pelaaja import KPSPelaajaVsPelaaja
-from kps_tekoaly import KPSTekoaly
-from kps_parempi_tekoaly import KPSParempiTekoaly
 from tuomari import Tuomari
 
 
@@ -23,22 +20,7 @@ class KPS:
 		print(self.tuomari)
 		
 	def _onko_ok_siirto(self, siirto: str) -> bool:
-		return siirto in ['k', 'p', 's']
+		return siirto in ["k", "p", "s"]
 		
 	def _ekan_siirto(self) -> str:
 		return input("Ensimmäisen pelaajan siirto: ")
-
-	@staticmethod
-	def pelaa_p_v_p(self):
-		peli = KPSPelaajaVsPelaaja()
-		return peli.pelaa()
-
-	@staticmethod
-	def pelaa_tekoaly(self):
-		peli = KPSTekoaly()
-		return peli.pelaa()
-
-	@staticmethod
-	def pelaa_parempi_tekoaly(self):
-		peli = KPSParempiTekoaly(10)
-		return peli.paleaa()

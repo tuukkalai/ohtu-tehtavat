@@ -1,4 +1,4 @@
-from kps import KPS
+from peli import peli
 
 
 def main():
@@ -12,24 +12,12 @@ def main():
 
         vastaus = input()
 
-        if vastaus.endswith("a"):
+        if vastaus.endswith("a") or vastaus.endswith("b") or vastaus.endswith("c"):
             print(
                 "Peli loppuu kun pelaaja antaa virheellisen siirron eli jonkun muun kuin k, p tai s"
             )
 
-            KPS.pelaa_p_v_p()
-        elif vastaus.endswith("b"):
-            print(
-                "Peli loppuu kun pelaaja antaa virheellisen siirron eli jonkun muun kuin k, p tai s"
-            )
-
-            KPS.pelaa_tekoaly()
-        elif vastaus.endswith("c"):
-            print(
-                "Peli loppuu kun pelaaja antaa virheellisen siirron eli jonkun muun kuin k, p tai s"
-            )
-
-            KPS.pelaa_parempi_tekoaly()
+            peli(vastaus[-1])
         else:
             break
 
